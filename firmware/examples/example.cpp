@@ -1,25 +1,5 @@
-/*-------------------------------------------------------------------------
-  SparkStrip is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as
-  published by the Free Software Foundation, either version 3 of
-  the License, or (at your option) any later version.
 
-  SparkStrip is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with SparkStrip.  If not, see
-  <http://www.gnu.org/licenses/>.
-
-  The original version of SparkStrip is available at:
-      https://github.com/DonGar/spark-strip
-  -------------------------------------------------------------------------*/
-
-#include "digital_strip.h"
-#include "neo_strip.h"
-#include "patterns.h"
+#include "spark-strip/spark-strip.h"
 
 //
 // This is an example of how to use the SparkStrip library.
@@ -33,10 +13,6 @@
 // The Spark Core is publishing events describing the patterns being drawn,
 //   and is accepting RPC calls to update the patterns at run time.
 //
-
-#include "color.h"
-#include "strip.h"
-#include "patterns.h"
 
 // LPD8806 Strip with 26 LEDs
 DigitalStrip stripRgb = DigitalStrip(26);
