@@ -27,4 +27,10 @@
 #include "digital-strip.h"
 #include "patterns.h"
 
+//
+// See example.cpp for an working example of how to use this library.
+//
+// Please see each header for documentation of each part of the library.
+//
+
 #endif
