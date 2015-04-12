@@ -49,11 +49,11 @@
 #include "strip.h"
 
 typedef enum {
-    WS2812,
-    WS2812B,
-    WS2811,
-    TM1803,
-    TM1829,
+  WS2812,
+  WS2812B,
+  WS2811,
+  TM1803,
+  TM1829,
 } NeoStripType;
 
 //

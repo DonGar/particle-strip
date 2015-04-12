@@ -25,13 +25,13 @@
 #define BLOB_COUNT (3)
 
 typedef enum {
-    SOLID,
-    PULSE,
-    CYLON,
-    ALTERNATE,
-    FLICKER,
-    LAVA,
-    PATTERN_COUNT
+  SOLID,
+  PULSE,
+  CYLON,
+  ALTERNATE,
+  FLICKER,
+  LAVA,
+  PATTERN_COUNT
 } PatternType;
 
 // Each pattern uses colors A and B differently. All patterns support 'special'

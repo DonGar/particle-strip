@@ -5,7 +5,7 @@ CORE_ID ?= Benchtop
 default: compile
 
 compile:
-	spark compile .  --saveTo firmware.bin
+	spark compile firmware  --saveTo firmware.bin
 
 push:
 	spark flash ${CORE_ID} .

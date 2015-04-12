@@ -1,0 +1,8 @@
+{
+  "name": "spark-strip",
+  "author": "DonGar, Adafruit, Technobly",
+  "license": "GNU LGPLv3",
+  "version": "1.0",
+  "description": "",
+  "namespace": "spark-strip"
+}

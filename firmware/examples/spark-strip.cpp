@@ -48,30 +48,30 @@ Pattern ringPattern = Pattern(&ringRgb);
 
 void setup()
 {
-    stripPattern.setPattern(CYLON, RED, BLACK, 1000);
-    ringPattern.setPattern(CYLON, RED, GREEN, 1000);
+  stripPattern.setPattern(CYLON, RED, BLACK, 1000);
+  ringPattern.setPattern(CYLON, RED, GREEN, 1000);
 
-    Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
-    Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
+  Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
+  Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
 
-    Spark.function("strip_target", setStripPattern);
-    Spark.function("ring_target", setRingPattern);
+  Spark.function("strip_target", setStripPattern);
+  Spark.function("ring_target", setRingPattern);
 }
 
 int setStripPattern(String text) {
-    int result = stripPattern.setText(text);
-    Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
-    return result;
+  int result = stripPattern.setText(text);
+  Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
+  return result;
 }
 
 int setRingPattern(String text) {
-    int result = ringPattern.setText(text);
-    Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
-    return result;
+  int result = ringPattern.setText(text);
+  Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
+  return result;
 }
 
 void loop()
 {
-    stripPattern.drawUpdate();
-    ringPattern.drawUpdate();
+  stripPattern.drawUpdate();
+  ringPattern.drawUpdate();
 }

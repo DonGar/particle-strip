@@ -17,31 +17,4 @@
       https://github.com/DonGar/spark-strip
   -------------------------------------------------------------------------*/
 
-#include "strip.h"
-
-ColorStrip::ColorStrip(int pixelCount) :
-        pixelCount(pixelCount),
-        drawOffset(0) {
-    this->pixelBuffer = (Color*)malloc(sizeof(Color) * pixelCount);
-}
-
-void ColorStrip::drawPixel(Color color) {
-    if (this->drawOffset >= this->pixelCount) {
-        return;
-    }
-
-    this->pixelBuffer[this->drawOffset] = color;
-    this->drawOffset++;
-}
-
-void ColorStrip::finishDraw() {
-    this->drawOffset = 0;
-}
-
-void ColorStrip::drawSolid(Color color) {
-    for (int i = 0; i < this->pixelCount; i++) {
-        this->drawPixel(color);
-    }
-
-    this->finishDraw();
-}
+#include "spark-strip.h"

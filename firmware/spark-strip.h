@@ -17,38 +17,14 @@
       https://github.com/DonGar/spark-strip
   -------------------------------------------------------------------------*/
 
-#include "digital_strip.h"
+#ifndef SPARK_STRIP_H
+#define SPARK_STRIP_H
 
-DigitalStrip::DigitalStrip(int pixelCount, int clockDivider) :
-        ColorStrip(pixelCount) {
+// Include all the headers provided by this library.
+#include "color.h"
+#include "strip.h"
+#include "neo-strip.h"
+#include "digital-strip.h"
+#include "patterns.h"
 
-    SPI.begin();
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setDataMode(SPI_MODE0);
-    SPI.setClockDivider(32);
-
-    this->finishDraw();
-    drawSolid(BLACK);
-}
-
-void DigitalStrip::drawPixel(Color color) {
-    ColorStrip::drawPixel(color);
-
-    // GRB color order, oddly, and only 0x7F is sinificant, so
-    // through away least significant bit.
-    SPI.transfer(color.green >> 1 | 0x80);
-    SPI.transfer(color.red >> 1   | 0x80);
-    SPI.transfer(color.blue >> 1  | 0x80);
-}
-
-void DigitalStrip::finishDraw() {
-    ColorStrip::finishDraw();
-
-    // Transfer enough zeros to latch all pixel controllers and prepare
-    // for new draws.
-    int latch_size = ((this->pixelCount+31) / 32) * 8;
-
-    for (int i = 0; i < latch_size; i++) {
-        SPI.transfer(0);
-    }
-}
+#endif
