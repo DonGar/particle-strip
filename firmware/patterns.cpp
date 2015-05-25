@@ -44,11 +44,11 @@ void Pattern::setPattern(PatternType pattern, Color a, Color b, int speed) {
   this->next.speed = speed;
 }
 
-void Pattern::drawUpdate() {
+bool Pattern::drawUpdate() {
   unsigned long now = millis();
 
   if (now < this->nextDraw)
-    return;
+    return false;
 
   switch (this->active.pattern) {
     case SOLID:
@@ -82,7 +82,11 @@ void Pattern::drawUpdate() {
 
     // Reset the working state.
     this->reset_workingstate();
+    return true;
   }
+
+  // The pattern wasn't updated.
+  return false;
 }
 
 const static String PATTERN_MAP[PATTERN_COUNT] = {

@@ -64,7 +64,8 @@ class Pattern {
 
     void setPattern(PatternType pattern, Color a, Color b, int speed);
 
-    void drawUpdate();
+    // Returns true, if the Pattern was updated.
+    bool drawUpdate();
 
     // Get/Set the pattern based on a string of the form:
     //   <PATTERN>,<COLOR>,<COLOR>,<SPEED>
