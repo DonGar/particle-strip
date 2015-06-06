@@ -70,6 +70,9 @@ bool Pattern::drawUpdate() {
     case LAVA:
       this->handle_lava();
       break;
+    case TEST:
+      this->handle_test();
+      break;
   }
 
   this->nextDraw = now + this->delay;
@@ -387,4 +390,46 @@ void Pattern::handle_lava() {
   }
 
   this->strip->finishDraw();
+}
+
+void Pattern::handle_test() {
+  static int COLOR_COUNT = 4;
+  static Color colors[] = {RED, GREEN, BLUE, WHITE};
+
+  this->next_ready = true;
+
+  // If go_right == true draw SOLID colors.
+  //    colors index = position.
+  // if go_right == false draw one pixel with color.
+  //    pixel       = position / COLOR_COUNT
+  //    color index = position % COLOR_COUNT
+
+  int max_position = this->go_right ?
+      COLOR_COUNT : this->strip->getPixelCount() * COLOR_COUNT;
+
+  if (this->position >= max_position) {
+    this->go_right = !this->go_right;
+    this->position = 0;
+  }
+
+  if (this->go_right) {
+    this->strip->drawSolid(colors[this->position]);
+    this->delay = this->active.speed;
+  } else {
+    int pixel = this->position / COLOR_COUNT;
+    int color_index = this->position % COLOR_COUNT;
+
+    for (int i = 0; i < this->strip->getPixelCount(); i++) {
+      if (i == pixel) {
+        this->strip->drawPixel(colors[color_index]);
+      } else {
+        this->strip->drawPixel(BLACK);
+      }
+    }
+    this->strip->finishDraw();
+
+    this->delay = this->active.speed / 2;
+  }
+
+  this->position++;
 }

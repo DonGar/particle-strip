@@ -31,6 +31,7 @@ typedef enum {
   ALTERNATE,
   FLICKER,
   LAVA,
+  TEST,
   PATTERN_COUNT
 } PatternType;
 
@@ -48,6 +49,8 @@ typedef enum {
 //          'off', speed ranges between 200-1000 are recommended.
 // LAVA: A lava lampish effect. Draw 3 blobs of color A over background of B,
 //       and morph them over time. Speed controls how long blobs last.
+// TEST: A test pattern to ensure a strip is working properly. Flashes
+//       Black, White, Red, Green, Blue, then repeates per-pixel.
 
 
 // Standard usage is to initialize the pattern in 'setup()', and call
@@ -82,6 +85,7 @@ class Pattern {
     void handle_alternate();
     void handle_flicker();
     void handle_lava();
+    void handle_test();
 
     typedef struct PatternDescription {
         PatternType pattern;
