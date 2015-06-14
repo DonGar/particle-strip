@@ -19,13 +19,12 @@
 
 #include "digital-strip.h"
 
-DigitalStrip::DigitalStrip(int pixelCount, int clockDivider) :
+DigitalStrip::DigitalStrip(int pixelCount) :
 ColorStrip(pixelCount) {
 
   SPI.begin();
   SPI.setBitOrder(MSBFIRST);
   SPI.setDataMode(SPI_MODE0);
-  SPI.setClockDivider(32);
 
   this->finishDraw();
   drawSolid(BLACK);

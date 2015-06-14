@@ -17,21 +17,38 @@
       https://github.com/DonGar/spark-strip
   -------------------------------------------------------------------------*/
 
-#ifndef SPARK_STRIP_H
-#define SPARK_STRIP_H
+#ifndef DOT_STRIP_H
+#define DOT_STRIP_H
 
-// Include all the headers provided by this library.
-#include "color.h"
 #include "strip.h"
-#include "digital-strip.h"
-#include "dot-strip.h"
-#include "neo-strip.h"
-#include "patterns.h"
 
+// Implements the ColorStrip interface for a LPD8806 RGB LED strip.
+
+// Example hardware:
+//   http://www.adafruit.com/product/306
 //
-// See example.cpp for an working example of how to use this library.
+// Uses the standard Spark SPI pins, via a level shifter. I used a
+//   a 74AHCT125.
 //
-// Please see each header for documentation of each part of the library.
+// Spark A3 -> 200 Ohm resister -> 74AHCT125 1A
+// Spark A5 -> 200 Ohm resister -> 74AHCT125 2A
 //
+// A high resistence pull up on these might avoid noise at startup.
+// 74AHCT125 1OE -> Ground
+// 74AHCT125 2OE -> Ground
+//
+// 74AHCT125 1Y -> Strip CI
+// 74AHCT125 2Y -> Strip DI
+
+// Strip +5V in to 5V (NOT from the Spark Core, it's too much power draw).
+// Strip GND to Ground.
+
+class DotStrip : public ColorStrip   {
+  public:
+    DotStrip(int pixelCount);
+
+    virtual void drawPixel(Color color);
+    virtual void finishDraw();
+};
 
 #endif

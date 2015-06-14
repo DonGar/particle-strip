@@ -17,21 +17,41 @@
       https://github.com/DonGar/spark-strip
   -------------------------------------------------------------------------*/
 
-#ifndef SPARK_STRIP_H
-#define SPARK_STRIP_H
-
-// Include all the headers provided by this library.
-#include "color.h"
-#include "strip.h"
-#include "digital-strip.h"
 #include "dot-strip.h"
-#include "neo-strip.h"
-#include "patterns.h"
 
-//
-// See example.cpp for an working example of how to use this library.
-//
-// Please see each header for documentation of each part of the library.
-//
+DotStrip::DotStrip(int pixelCount) :
+ColorStrip(pixelCount) {
 
-#endif
+  SPI.begin();
+  SPI.setBitOrder(MSBFIRST);
+  SPI.setDataMode(SPI_MODE0);
+
+  drawSolid(BLACK);
+}
+
+void DotStrip::drawPixel(Color color) {
+  if (this->drawOffset == 0) {
+    // Signal the start of draw.
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+  }
+
+  ColorStrip::drawPixel(color);
+
+  SPI.transfer(0xFF);
+  SPI.transfer(color.green);
+  SPI.transfer(color.blue);
+  SPI.transfer(color.red);
+}
+
+void DotStrip::finishDraw() {
+  ColorStrip::finishDraw();
+
+  // Signal the end of draw.
+  SPI.transfer(0x00);
+  SPI.transfer(0x00);
+  SPI.transfer(0x00);
+  SPI.transfer(0x00);
+}

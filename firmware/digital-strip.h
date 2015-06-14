@@ -36,7 +36,7 @@
 //   GND to Ground.
 class DigitalStrip : public ColorStrip   {
   public:
-    DigitalStrip(int pixelCount, int clockDivider = 32);
+    DigitalStrip(int pixelCount);
 
     virtual void drawPixel(Color color);
     virtual void finishDraw();
