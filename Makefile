@@ -2,12 +2,18 @@
 # Id of device to push.
 CORE_ID ?= Benchtop
 
+.PHONY: default compile push flash wifi clean
+
 default: compile
 
-compile:
+firmware.bin: firmware/*
+	# This returns success, even on failure.
 	particle compile firmware  --saveTo firmware.bin
 
-push: compile
+compile: firmware.bin
+
+push: clean compile
+	# Clean first, to force an error out on failure.
 	particle flash ${CORE_ID} firmware.bin
 
 flash:
@@ -17,4 +23,4 @@ wifi:
 	sudo particle setup wifi
 
 clean:
-	rm firmware.bin
+	rm -f firmware.bin
