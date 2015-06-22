@@ -16,19 +16,16 @@
 
 // LPD8806 Strip with 26 LEDs
 DigitalStrip stripRgb = DigitalStrip(26);
-Pattern stripPattern = Pattern(&stripRgb);
+Pattern stripPattern = Pattern(&stripRgb, "strip");
 
 // NeoPixel strip with 16 LEDs
 NeoStrip ringRgb = NeoStrip(16, D2, WS2812B);
-Pattern ringPattern = Pattern(&ringRgb);
+Pattern ringPattern = Pattern(&ringRgb, "ring");
 
 void setup()
 {
   stripPattern.setPattern(CYLON, RED, BLACK, 1000);
   ringPattern.setPattern(CYLON, RED, GREEN, 1000);
-
-  Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
-  Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
 
   Spark.function("strip_target", setStripPattern);
   Spark.function("ring_target", setRingPattern);

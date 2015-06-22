@@ -22,19 +22,27 @@
 #include "math.h"
 
 
-Pattern::Pattern(ColorStrip* strip) :
+Pattern::Pattern(ColorStrip* strip, String event_name) :
     strip(strip) {
 
   // Start off by turning the strip off.
   this->active.pattern = SOLID;
   this->active.a = BLACK;
-  this->active.speed = 1000;
+  this->active.speed = 100;
 
-  // Set 'next' pattern to empty.
-  this->next.pattern = PATTERN_COUNT;
+  // Set 'next' pattern to same.
+  this->next = this->active;
+
+  this->event_name = event_name;
 
   // Clear the working state.
   this->reset_workingstate();
+
+  // You would think we should publish to event_name here, BUT, this constructor
+  // is normally invoked from static initialization, and trying to publish an
+  // event before "setup" is called will probably crash the firmware. By setting
+  // the initial 'next' to the same as active, we'll cause our initial pattern
+  // to be published when we switch to it.
 }
 
 void Pattern::setPattern(PatternType pattern, Color a, Color b, int speed) {
@@ -83,6 +91,11 @@ bool Pattern::drawUpdate() {
     this->active = this->next;
     this->next.pattern = PATTERN_COUNT;
 
+    // Publish the new active pattern.
+    if (this->event_name != "") {
+      Spark.publish(this->event_name, this->getText(), 60, PRIVATE);
+    }
+
     // Reset the working state.
     this->reset_workingstate();
     return true;
@@ -93,7 +106,7 @@ bool Pattern::drawUpdate() {
 }
 
 const static String PATTERN_MAP[PATTERN_COUNT] = {
-  "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA"
+  "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA", "TEST"
 };
 
 String Pattern::getText() {

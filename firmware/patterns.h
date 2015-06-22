@@ -60,10 +60,13 @@ typedef enum {
 // It's generally safe to call "setPattern" to change the pattern at any time,
 // but the change won't take effect until after a clean break in the current
 // animation cycle.
+//
+// If an event_name is given to the constructor, then getText() will be
+// published to it every time the pattern being displayed it updated.
 
 class Pattern {
   public:
-    Pattern(ColorStrip* strip);
+    Pattern(ColorStrip* strip, String event_name="");
 
     void setPattern(PatternType pattern, Color a, Color b, int speed);
 
@@ -120,6 +123,8 @@ class Pattern {
     ColorStrip* strip;
     PatternDescription active;
     PatternDescription next;
+
+    String event_name;
 
     unsigned long nextDraw;
 };
