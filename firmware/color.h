@@ -31,17 +31,11 @@
 
 // Define "Color"
 #pragma pack(push, 1)
-typedef union {
-
-  struct {
-    uint8_t special;   // Normally zero, used by expandSpecial.
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
-  };
-
-  uint32_t color;
-
+typedef struct {
+  uint8_t special;   // Normally zero, used by expandSpecial.
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
 } Color;
 #pragma pack(pop)
 

@@ -21,12 +21,13 @@
 
 
 Color expandSpecial(Color color) {
-  if (color.color == RANDOM.color)
+  if (color.special == RANDOM.special)
     return randomColor();
 
-  if (color.color == RANDOM_PRIMARY.color)
+  if (color.special == RANDOM_PRIMARY.special)
     return randomPrimaryColor();
 
+  color.special = 0;
   return color;
 }
 
@@ -96,18 +97,72 @@ Color morphColor(Color base, Color target) {
   return result;
 }
 
-// Returns format: "0xFFFFFFFF"
-String colorToString(Color color) {
-  String strValue = String(color.color, HEX);
-  String header("0x00000000");
-
-  return header.substring(0, header.length() - strValue.length()) + strValue;
+// Helper to convert a byte to a two digit HEX string.
+String b_s(uint8_t b) {
+  String result(b, HEX);
+  return result.length() == 1 ? "0" + result : result;
 }
 
-// Accepts format: "0xFFFFFFFF"
+// Returns format: "0xFFFFFFFF"
+String colorToString(Color color) {
+  // This is horrible, but works.
+  String result = (
+    "0x" +
+    b_s(color.special) +
+    b_s(color.red) +
+    b_s(color.green) +
+    b_s(color.blue)
+  );
+
+  result.toUpperCase();
+  return result;
+}
+
+typedef struct {
+  String name;
+  Color color;
+} nameToColor;
+
+#define COLOR_NAME_MAP_SIZE 10
+nameToColor colorNameMap[COLOR_NAME_MAP_SIZE] = {
+  "BLACK", BLACK,
+  "WHITE", WHITE,
+  "RED", RED,
+  "GREEN", GREEN,
+  "BLUE", BLUE,
+  "YELLOW", YELLOW,
+  "LIGHT_BLUE", LIGHT_BLUE,
+  "PURPLE", PURPLE,
+  "RANDOM", RANDOM,
+  "RANDOM_PRIMARY", RANDOM_PRIMARY,
+};
+
 Color stringToColor(String color) {
+
+  // Try to look up well known color names.
+  for (int i = 0; i < COLOR_NAME_MAP_SIZE; i++) {
+    if (color == colorNameMap[i].name) {
+      return colorNameMap[i].color;
+    }
+  }
+
+  // Otherwise, it's expected to be a HEX string of format "0xFFFFFFFF",
+  // case insensitive.
+
+  String prefix = color.substring(0, 2);
+  prefix.toUpperCase();
+
+  // If it's a bad string, default to BLACK.
+  if (prefix != "0X" || color.length() != 10)
+    return BLACK;
+
   Color result;
-  result.color = strtol(color.c_str(), NULL, 16);
+
+  // Read each byte in the expected order.
+  result.special = strtol(color.substring(2, 4).c_str(), NULL, 16);
+  result.red = strtol(color.substring(4, 6).c_str(), NULL, 16);
+  result.green = strtol(color.substring(6, 8).c_str(), NULL, 16);
+  result.blue = strtol(color.substring(8, 10).c_str(), NULL, 16);
 
   return result;
 }
