@@ -2,7 +2,7 @@
 #include "spark-strip/spark-strip.h"
 
 //
-// This is an example of how to use the SparkStrip library.
+// This is an example of how to use the ParticleStrip library.
 //
 // For this demo, I used:
 //   LPD8806 strip: http://www.adafruit.com/product/306

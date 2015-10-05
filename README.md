@@ -1,7 +1,7 @@
-# spark-strip
+# particle-strip
 
 Library to drawing animations to various types of LED strips from a
-[Spark Core](https://store.spark.io/?product=spark-core)
+[Particle Core](https://store.particle.io/?product=spark-core)
 
 SupportedHardware:
  * LPD8806 RGB LEDs [Example](http://www.adafru.it/306)

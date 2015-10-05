@@ -1,20 +1,20 @@
 /*-------------------------------------------------------------------------
-  SparkStrip is free software: you can redistribute it and/or modify
+  ParticleStrip is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of
   the License, or (at your option) any later version.
 
-  SparkStrip is distributed in the hope that it will be useful,
+  ParticleStrip is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with SparkStrip.  If not, see
+  License along with ParticleStrip.  If not, see
   <http://www.gnu.org/licenses/>.
 
-  The original version of SparkStrip is available at:
-      https://github.com/DonGar/spark-strip
+  The original version of ParticleStrip is available at:
+      'https://github.com/DonGar/particle-strip
   -------------------------------------------------------------------------*/
 
 #ifndef DOT_STRIP_H
@@ -27,11 +27,11 @@
 // Example hardware:
 //   http://www.adafruit.com/product/306
 //
-// Uses the standard Spark SPI pins, via a level shifter. I used a
+// Uses the standard Core SPI pins, via a level shifter. I used a
 //   a 74AHCT125.
 //
-// Spark A3 -> 200 Ohm resister -> 74AHCT125 1A
-// Spark A5 -> 200 Ohm resister -> 74AHCT125 2A
+// Core A3 -> 200 Ohm resister -> 74AHCT125 1A
+// Core A5 -> 200 Ohm resister -> 74AHCT125 2A
 //
 // A high resistence pull up on these might avoid noise at startup.
 // 74AHCT125 1OE -> Ground

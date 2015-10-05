@@ -1,5 +1,5 @@
 {
-  "name": "spark-strip",
+  "name": "particle-strip",
   "author": "DonGar, Adafruit, Technobly",
   "license": "GNU LGPLv3",
   "version": "1.3.0",
@@ -14,5 +14,5 @@ the current pattern as an event, and update patterns as a Cloud function calls.
 
 Please send bug reports (especially for new hardware) to dgarrett@acm.org.
 ",
-  "namespace": "spark-strip"
+  "namespace": "particle-strip"
 }
