@@ -1,5 +1,5 @@
 
-#include "spark-strip/spark-strip.h"
+#include "particle-strip/particle-strip.h"
 
 //
 // This is an example of how to use the ParticleStrip library.

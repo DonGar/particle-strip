@@ -1,8 +1,8 @@
 {
   "name": "particle-strip",
+  "version": "1.4.0",
   "author": "DonGar, Adafruit, Technobly",
   "license": "GNU LGPLv3",
-  "version": "1.3.0",
   "description":
 "Control several RGB LED Strip types (Digital RGB, NeoPixel, DotStart).
 
@@ -13,6 +13,5 @@ Includes Pattern library to easily perform several standard patterns, report
 the current pattern as an event, and update patterns as a Cloud function calls.
 
 Please send bug reports (especially for new hardware) to dgarrett@acm.org.
-",
-  "namespace": "particle-strip"
+"
 }
