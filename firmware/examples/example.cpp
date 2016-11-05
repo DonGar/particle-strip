@@ -1,5 +1,5 @@
 
-#include "particle-strip/particle-strip.h"
+#include "particle-strip2/particle-strip2.h"
 
 //
 // This is an example of how to use the ParticleStrip library.
