@@ -1,5 +1,5 @@
 
-#include "particle-strip2/particle-strip2.h"
+#include "particle-strip.h"
 
 //
 // This is an example of how to use the ParticleStrip library.
@@ -22,15 +22,6 @@ Pattern stripPattern = Pattern(&stripRgb, "strip");
 NeoStrip ringRgb = NeoStrip(16, D2, WS2812B);
 Pattern ringPattern = Pattern(&ringRgb, "ring");
 
-void setup()
-{
-  stripPattern.setPattern(CYLON, RED, BLACK, 1000);
-  ringPattern.setPattern(CYLON, RED, GREEN, 1000);
-
-  Spark.function("strip_target", setStripPattern);
-  Spark.function("ring_target", setRingPattern);
-}
-
 int setStripPattern(String text) {
   int result = stripPattern.setText(text);
   Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
@@ -41,6 +32,15 @@ int setRingPattern(String text) {
   int result = ringPattern.setText(text);
   Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
   return result;
+}
+
+void setup()
+{
+  stripPattern.setPattern(CYLON, RED, BLACK, 1000);
+  ringPattern.setPattern(CYLON, RED, GREEN, 1000);
+
+  Spark.function("strip_target", setStripPattern);
+  Spark.function("ring_target", setRingPattern);
 }
 
 void loop()

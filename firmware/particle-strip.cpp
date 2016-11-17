@@ -17,4 +17,4 @@
       'https://github.com/DonGar/particle-strip
   -------------------------------------------------------------------------*/
 
-#include "spark-strip.h"
+#include "particle-strip.h"
