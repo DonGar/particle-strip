@@ -98,7 +98,7 @@ void NeoStrip::finishDraw() {
       switch (this->neoType) {
         case WS2812:
         case WS2812B:
-          PIN_MAP[pin].gpio_peripheral->BSRR = PIN_MAP[pin].gpio_pin; // HIGH
+          digitalWriteFast(pin, HIGH);
           if (pixelSubBit) {
             // if masked bit is high
             // WS2812 spec             700ns HIGH
@@ -117,7 +117,7 @@ void NeoStrip::finishDraw() {
             // WS2812 spec             600ns LOW
             // Adafruit on Arduino    (meas. 436ns)
             // This lib on Spark Core (meas. 472ns)
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             asm volatile(
               "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
               "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -133,7 +133,7 @@ void NeoStrip::finishDraw() {
             // WS2812 spec             800ns LOW
             // Adafruit on Arduino    (meas. 938ns)
             // This lib on Spark Core (meas. 932ns)
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             asm volatile(
               "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
               "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -148,7 +148,7 @@ void NeoStrip::finishDraw() {
           break;
 
         case WS2811:
-          PIN_MAP[pin].gpio_peripheral->BSRR = PIN_MAP[pin].gpio_pin; // HIGH
+          digitalWriteFast(pin, HIGH);
           if (pixelSubBit) {
             // if masked bit is high
             // WS2811 spec             1.20us HIGH
@@ -173,7 +173,7 @@ void NeoStrip::finishDraw() {
             // WS2811 spec             1.30us LOW
             // Adafruit on Arduino    (meas. 1.25us)
             // This lib on Spark Core (meas. 1.25us)
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             asm volatile(
               "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
               "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -202,7 +202,7 @@ void NeoStrip::finishDraw() {
             // WS2811 spec             2.000us LOW
             // Adafruit on Arduino    (meas. 2.000us)
             // This lib on Spark Core (meas. 2.000us)
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             asm volatile(
               "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
               "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -232,7 +232,7 @@ void NeoStrip::finishDraw() {
           break;
 
         case TM1803:
-          PIN_MAP[pin].gpio_peripheral->BSRR = PIN_MAP[pin].gpio_pin; // HIGH
+          digitalWriteFast(pin, HIGH);
           if (pixelSubBit) {
             // if masked bit is high
             // TM1803 spec             1.36us HIGH
@@ -259,7 +259,7 @@ void NeoStrip::finishDraw() {
             // TM1803 spec             680ns LOW
             // Pololu on Arduino      (meas. 1.024us)
             // This lib on Spark Core (meas. 670ns)
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             asm volatile(
               "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
               "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -283,7 +283,7 @@ void NeoStrip::finishDraw() {
               // TM1803 spec             1.36us LOW
               // Pololu on Arduino      (meas. 2.00us)
               // This lib on Spark Core (meas. 1.36us)
-              PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+              digitalWriteFast(pin, LOW);
               asm volatile(
                 "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
                 "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -304,7 +304,7 @@ void NeoStrip::finishDraw() {
             break;
 
           case TM1829:
-            PIN_MAP[pin].gpio_peripheral->BRR = PIN_MAP[pin].gpio_pin; // LOW
+            digitalWriteFast(pin, LOW);
             if (pixelSubBit) {
               // if masked bit is high
               // TM1829 spec             800ns LOW
@@ -319,7 +319,7 @@ void NeoStrip::finishDraw() {
                 ::: "r0", "cc", "memory");
               // TM1829 spec             300ns HIGH
               // This lib on Spark Core (meas. 319ns)
-              PIN_MAP[pin].gpio_peripheral->BSRR = PIN_MAP[pin].gpio_pin; // HIGH
+              digitalWriteFast(pin, HIGH);
               asm volatile(
                 "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
                 ::: "r0", "cc", "memory");
@@ -332,7 +332,7 @@ void NeoStrip::finishDraw() {
                 ::: "r0", "cc", "memory");
               // TM1829 spec             800ns HIGH
               // This lib on Spark Core (meas. 805ns)
-              PIN_MAP[pin].gpio_peripheral->BSRR = PIN_MAP[pin].gpio_pin; // HIGH
+              digitalWriteFast(pin, HIGH);
               asm volatile(
                 "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
                 "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
