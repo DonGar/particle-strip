@@ -17,8 +17,8 @@
       'https://github.com/DonGar/particle-strip
   -------------------------------------------------------------------------*/
 
-#ifndef SPARK_STRIP_H
-#define SPARK_STRIP_H
+#ifndef PARTICLE_STRIP_H
+#define PARTICLE_STRIP_H
 
 // Include all the headers provided by this library.
 #include "color.h"
@@ -29,9 +29,9 @@
 #include "patterns.h"
 
 //
-// See example.cpp for an working example of how to use this library.
-//
-// Please see each header for documentation of each part of the library.
+// See examples directory for examples with all strip types,
+// for working with various animation patterns, working with colors,
+// and for working with particle cloud RPCs.
 //
 
 #endif

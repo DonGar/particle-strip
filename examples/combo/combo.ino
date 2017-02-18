@@ -8,7 +8,7 @@
 //   LPD8806 strip: http://www.adafruit.com/product/306
 //   NeoPixel ring: http://www.adafruit.com/products/1463
 //
-// Both connected, as described in digital_strip.h, and neo_strip.h.
+// Both connected, as described in digital-strip.h, and neo-strip.h.
 //
 // The Spark Core is publishing events describing the patterns being drawn,
 //   and is accepting RPC calls to update the patterns at run time.
