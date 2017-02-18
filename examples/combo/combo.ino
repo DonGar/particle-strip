@@ -15,12 +15,12 @@
 //
 
 // LPD8806 Strip with 26 LEDs
-DigitalStrip stripRgb = DigitalStrip(26);
-Pattern stripPattern = Pattern(&stripRgb, "strip");
+DigitalStrip stripRgb(26);
+Pattern stripPattern(&stripRgb, "strip");
 
 // NeoPixel strip with 16 LEDs
-NeoStrip ringRgb = NeoStrip(16, D2, WS2812B);
-Pattern ringPattern = Pattern(&ringRgb, "ring");
+NeoStrip ringRgb(16, D2, WS2812B);
+Pattern ringPattern(&ringRgb, "ring");
 
 int setStripPattern(String text) {
   int result = stripPattern.setText(text);

@@ -11,8 +11,8 @@
 //
 
 // DotStar strip with 30 LEDs
-DotStrip dotRgb = DotStrip(30);  // Replace with any strip type.
-Pattern pattern = Pattern(&dotRgb);
+DotStrip dotRgb(30);  // Replace with any strip type.
+Pattern pattern(&dotRgb);
 
 // Switch to a new animation pattern each time it's called.
 void advancePattern() {
