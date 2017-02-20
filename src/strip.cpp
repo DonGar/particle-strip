@@ -19,10 +19,13 @@
 
 #include "strip.h"
 
-ColorStrip::ColorStrip(int pixelCount) :
+ColorStrip::ColorStrip(int pixelCount, bool buffer) :
     pixelCount(pixelCount),
-    drawOffset(0) {
-  this->pixelBuffer = (Color*)malloc(sizeof(Color) * pixelCount);
+    drawOffset(0),
+    pixelBuffer(NULL) {
+  if (buffer) {
+    this->pixelBuffer = (Color*)malloc(sizeof(Color) * pixelCount);
+  }
 }
 
 void ColorStrip::drawPixel(Color color) {

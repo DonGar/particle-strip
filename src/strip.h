@@ -34,7 +34,7 @@
 
 class ColorStrip {
   public:
-    ColorStrip(int pixelCount);
+    ColorStrip(int pixelCount, bool buffer=true);
 
     virtual void drawPixel(Color color);
     virtual void finishDraw();

@@ -47,14 +47,7 @@
 #define NEO_STRIP_H
 
 #include "strip.h"
-
-typedef enum {
-  WS2812,
-  WS2812B,
-  WS2811,
-  TM1803,
-  TM1829,
-} NeoStripType;
+#include "neopixel.h"
 
 //
 // Adafruit NeoPixel strips.
@@ -65,17 +58,13 @@ typedef enum {
 //
 class NeoStrip : public ColorStrip   {
   public:
-    NeoStrip(int pixelCount, int pin, NeoStripType neoType=WS2812B);
+    NeoStrip(int pixelCount, int pin, uint8_t neoType=WS2812B);
 
+    virtual void drawPixel(Color color);
     virtual void finishDraw();
 
   private:
-    void startLatch();
-    void finishLatch();
-
-    int pin;
-    NeoStripType neoType;
-    unsigned long latchStartTime;
+    Adafruit_NeoPixel neoLibrary;
 };
 
 #endif
