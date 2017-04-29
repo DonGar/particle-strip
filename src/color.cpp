@@ -97,6 +97,17 @@ Color morphColor(Color base, Color target) {
   return result;
 }
 
+Color invertColor(Color base) {
+  Color result;
+
+  result.special = 0;
+  result.red = 255 - base.red;
+  result.green = 255 - base.green;
+  result.blue = 255 - base.blue;
+
+  return result;
+}
+
 // Helper to convert a byte to a two digit HEX string.
 String b_s(uint8_t b) {
   String result(b, HEX);

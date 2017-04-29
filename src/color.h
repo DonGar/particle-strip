@@ -74,6 +74,9 @@ Color dimColor(Color color, float brightness);
 // Will reach target in 255 steps or less.
 Color morphColor(Color base, Color target);
 
+// Invert a colors values (255 - color).
+Color invertColor(Color color);
+
 // Returns string of form 0xFFFFFFFF
 String colorToString(Color color);
 

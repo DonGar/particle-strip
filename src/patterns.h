@@ -64,6 +64,13 @@ typedef enum {
 // If an event_name is given to the constructor, then getText() will be
 // published to it every time the pattern being displayed it updated.
 
+// Sample patterns
+// Halloween:  FLICKER,0X005F1000,0X00000000,200
+// Night time: SOLID,0x5f5f5f00,0x00000000,1000
+// Midnight:   CYLON,0x00ff0000,0x00000000,1000
+// Lava Lamp:  LAVA,0X01000000,0X00000000,200
+// Doorbell:  PULSE,0X0000FF00,0X00000000,10
+
 class Pattern {
   public:
     Pattern(ColorStrip* strip, String event_name="");

@@ -17,22 +17,33 @@
       'https://github.com/DonGar/particle-strip
   -------------------------------------------------------------------------*/
 
-#ifndef PARTICLE_STRIP_H
-#define PARTICLE_STRIP_H
-
-// Include all the headers provided by this library.
-#include "color.h"
-#include "strip.h"
-#include "digital-strip.h"
-#include "dot-strip.h"
-#include "neo-strip.h"
 #include "led-strip.h"
-#include "patterns.h"
 
-//
-// See examples directory for examples with all strip types,
-// for working with various animation patterns, working with colors,
-// and for working with particle cloud RPCs.
-//
+const int STRIP_LENGTH = 1;
 
-#endif
+LedStrip::LedStrip(int red_pin, int green_pin, int blue_pin,
+                   bool common_anode) :
+    ColorStrip(STRIP_LENGTH, false),
+    red_pin(red_pin), green_pin(green_pin), blue_pin(blue_pin),
+    common_anode(common_anode) {
+
+  pinMode(this->red_pin, OUTPUT);
+  pinMode(this->green_pin, OUTPUT);
+  pinMode(this->blue_pin, OUTPUT);
+
+  drawSolid(BLACK);
+}
+
+void LedStrip::drawPixel(Color color) {
+  if (this->drawOffset >= this->pixelCount) {
+    return;
+  }
+  this->drawOffset++;
+
+  if (this->common_anode)
+    color = invertColor(color);
+
+  analogWrite(this->red_pin, color.red);
+  analogWrite(this->green_pin, color.green);
+  analogWrite(this->blue_pin, color.blue);
+}
