@@ -55,6 +55,12 @@ Color randomPrimaryColor() {
 
 // ratio 0 means all left color. ratio 1.0 means all right color.
 Color mixColor(Color left, Color right, float ratio) {
+  if (ratio < 0.0)
+    ratio = 0.0;
+
+  if (ratio > 1.0)
+    ratio = 1.0;
+
   float l_ratio = 1.0 - ratio;
   float r_ratio = ratio;
 
