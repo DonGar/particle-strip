@@ -83,4 +83,16 @@ String colorToString(Color color);
 // Accepts output of above. Returns BLACK on failure.
 Color stringToColor(String color);
 
+// Comparison Operators
+inline bool operator ==(const Color &left, const Color &right) {
+  return ((left.special == right.special) &&
+          (left.red == right.red) &&
+          (left.green == right.green) &&
+          (left.blue == right.blue));
+}
+
+inline bool operator !=(const Color &left, const Color &right) {
+  return !(left == right);
+}
+
 #endif
