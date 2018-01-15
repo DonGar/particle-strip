@@ -35,21 +35,21 @@ void advancePattern() {
       pattern.setPattern(SOLID, RANDOM_PRIMARY, BLACK, 1000);
       break;
 
-    case 4:
+    case 3:
       // Pulse RANDOM color each pulse. Pulses last 400ms.
-      pattern.setPattern(PULSE, RANDOM, BLACK, 400);
+      pattern.setPattern(PULSE, RANDOM, BLACK, 10);
       break;
 
-    case 5:
+    case 4:
       // Do a red on orange lava lamp behavior.
       Color orange = Color{0x00, 0xFF, 0xA5, 0x00};
       pattern.setPattern(LAVA, RED, orange, 400);
       break;
-    // 6, 7 skipped to let LAVA have 3 turns.
+    // 5, 6 skipped to let LAVA have 3 turns.
   }
 
   // Use next pattern on next call, wrapping.
-  which = (which + 1) % 8;
+  which = (which + 1) % 5;
 }
 
 void setup() {

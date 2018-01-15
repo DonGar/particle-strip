@@ -58,46 +58,48 @@ bool Pattern::drawUpdate() {
   if (now < this->nextDraw)
     return false;
 
+  bool next_ready = false;
+
   switch (this->active.pattern) {
     case SOLID:
     case PATTERN_COUNT:
-      this->handle_solid();
+      next_ready = this->handle_solid();
       break;
     case PULSE:
-      this->handle_pulse();
+      next_ready = this->handle_pulse();
       break;
     case CYLON:
-      this->handle_cylon();
+      next_ready = this->handle_cylon();
       break;
     case ALTERNATE:
-      this->handle_alternate();
+      next_ready = this->handle_alternate();
       break;
     case FLICKER:
-      this->handle_flicker();
+      next_ready = this->handle_flicker();
       break;
     case LAVA:
-      this->handle_lava();
+      next_ready = this->handle_lava();
       break;
     case TEST:
-      this->handle_test();
+      next_ready = this->handle_test();
       break;
   }
 
+  this->initial = false;
   this->nextDraw = now + this->delay;
 
-  if (this->next_ready &&
+  if (next_ready &&
       this->next.pattern != PATTERN_COUNT) {
     // Switch to next pattern, reset next.
     this->active = this->next;
     this->next.pattern = PATTERN_COUNT;
+    this->reset_workingstate();
 
     // Publish the new active pattern.
     if (this->event_name != "") {
       Spark.publish(this->event_name, this->getText(), 60, PRIVATE);
     }
 
-    // Reset the working state.
-    this->reset_workingstate();
     return true;
   }
 
@@ -173,7 +175,7 @@ int Pattern::setText(String text) {
 
 void Pattern::reset_workingstate() {
   this->delay = 0;
-  this->next_ready = false;
+  this->initial = true;
   this->a = BLACK;
   this->b = BLACK;
   this->c = BLACK;
@@ -187,23 +189,20 @@ void Pattern::reset_workingstate() {
   }
 }
 
-
-void Pattern::handle_solid() {
+bool Pattern::handle_solid() {
   if (this->delay == 0) {
     this->delay = this->active.speed;
-    this->next_ready = true;
   }
 
   this->strip->drawSolid(expandSpecial(this->active.a));
+  return true;
 }
 
-void Pattern::handle_pulse() {
-  static int steps = 0xFF;
+bool Pattern::handle_pulse() {
+  const static int steps = 0xFF;
+  bool next_ready = false;
 
-  this->next_ready = false;
-
-  bool initial = this->delay == 0;
-  if (initial) {
+  if (this->initial) {
     this->delay = this->active.speed / steps;
   }
 
@@ -215,7 +214,7 @@ void Pattern::handle_pulse() {
   if (this->position <= 0) {
     this->go_right = true;
     this->b = expandSpecial(this->active.b);
-    this->next_ready = !initial;
+    next_ready = !this->initial;
   }
 
   float ratio = this->position / (float)steps;
@@ -228,17 +227,18 @@ void Pattern::handle_pulse() {
   } else {
     this->position--;
   }
+
+  return next_ready;
 }
 
-void Pattern::handle_cylon() {
-  bool initial = this->delay == 0;
-  if (initial) {
+bool Pattern::handle_cylon() {
+  if (this->initial) {
     this->a = expandSpecial(this->active.a);
     this->b = expandSpecial(this->active.b);
     this->c = mixColor(this->a, this->b, 0.95);
   }
 
-  this->next_ready = false;
+  bool next_ready = false;
   this->delay = (this->active.speed / (this->strip->getPixelCount() * 2));
 
   // Bounce directions, if needed. Delay longer at the bounce.
@@ -250,7 +250,7 @@ void Pattern::handle_cylon() {
   if (this->position <= 0) {
     this->go_right = true;
     this->delay = this->delay * 3;
-    this->next_ready = !initial;
+    next_ready = !initial;
   }
 
   // Do the draw.
@@ -273,10 +273,12 @@ void Pattern::handle_cylon() {
   } else {
     this->position--;
   }
+
+  return next_ready;
 }
 
-void Pattern::handle_alternate() {
-  if (this->delay == 0) {
+bool Pattern::handle_alternate() {
+  if (this->initial) {
     this->delay = this->active.speed;
     this->a = expandSpecial(this->active.a);
     this->b = expandSpecial(this->active.b);
@@ -289,7 +291,7 @@ void Pattern::handle_alternate() {
   this->strip->finishDraw();
 
   this->go_right = !this->go_right;
-  this->next_ready = this->go_right;
+  return this->go_right;
 }
 
 // This attempts to simulate a light with a poor electrical connection (often
@@ -298,11 +300,11 @@ void Pattern::handle_alternate() {
 //
 // speed values between 200 and 1000 are recommended for best effect (the larger
 // the range, the less frequent flicker behavior is).
-void Pattern::handle_flicker() {
+bool Pattern::handle_flicker() {
   // this->position current light 'connection' strength.
   // this->active.speed    The range over which 'connection' can move.
 
-  if (this->delay == 0) {
+  if (this->initial) {
     this->delay = 10;
 
     this->a = expandSpecial(this->active.a);
@@ -311,7 +313,7 @@ void Pattern::handle_flicker() {
     this->position = this->active.speed / 2;
   }
 
-  this->next_ready = false;
+  bool next_ready = false;
 
   // -10, 0, 10  (steps of 10 used increase standard speeds)
   this->position += random(-1, 2) * 10;
@@ -325,7 +327,7 @@ void Pattern::handle_flicker() {
   if (this->position > this->active.speed) {
     this->position = this->active.speed;
     this->b = expandSpecial(this->active.b);
-    this->next_ready = true;
+    next_ready = true;
   }
 
   bool new_go_right = this->position >= (this->active.speed / 2);
@@ -334,18 +336,19 @@ void Pattern::handle_flicker() {
     this->go_right = new_go_right;
     this->strip->drawSolid(this->go_right ? this->a : this->b);
   }
+
+  return next_ready;
 }
 
-void Pattern::handle_lava() {
+bool Pattern::handle_lava() {
   // Intialize all of our blobs to be off screen (so to speak).
-  if (this->delay == 0) {
+  if (this->initial) {
     this->delay = 10;
     this->b = expandSpecial(this->active.b);
 
     // Initialize the strip.
     this->strip->drawSolid(BLACK);
   }
-  this->next_ready = true;
 
   // Read-Only.
   int pixelCount = this->strip->getPixelCount();
@@ -403,13 +406,12 @@ void Pattern::handle_lava() {
   }
 
   this->strip->finishDraw();
+  return true;
 }
 
-void Pattern::handle_test() {
+bool Pattern::handle_test() {
   static int COLOR_COUNT = 4;
   static Color colors[] = {RED, GREEN, BLUE, WHITE};
-
-  this->next_ready = true;
 
   // If go_right == true draw SOLID colors.
   //    colors index = position.
@@ -445,4 +447,5 @@ void Pattern::handle_test() {
   }
 
   this->position++;
+  return true;
 }

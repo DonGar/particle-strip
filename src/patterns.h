@@ -89,13 +89,13 @@ class Pattern {
   protected:
     void reset_workingstate();
 
-    void handle_solid();
-    void handle_pulse();
-    void handle_cylon();
-    void handle_alternate();
-    void handle_flicker();
-    void handle_lava();
-    void handle_test();
+    bool handle_solid();
+    bool handle_pulse();
+    bool handle_cylon();
+    bool handle_alternate();
+    bool handle_flicker();
+    bool handle_lava();
+    bool handle_test();
 
     typedef struct PatternDescription {
         PatternType pattern;
@@ -115,7 +115,7 @@ class Pattern {
 
     // Shared State between Pattern, and handler method.
     unsigned long delay;  // Delay before next draw.
-    bool next_ready;      // Is current pattern ready to exit.
+    bool initial;         // Is this the first iteration for the pattern.
 
     // Provided for handler methods.
     Color a;
