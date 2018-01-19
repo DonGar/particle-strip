@@ -21,13 +21,13 @@
 #define PARTICLE_STRIP_H
 
 // Include all the headers provided by this library.
-#include "color.h"
-#include "strip.h"
-#include "digital-strip.h"
-#include "dot-strip.h"
-#include "neo-strip.h"
-#include "led-strip.h"
-#include "patterns.h"
+#include "ParticleStrip/color.h"
+#include "ParticleStrip/strip.h"
+#include "ParticleStrip/digital-strip.h"
+#include "ParticleStrip/dot-strip.h"
+#include "ParticleStrip/neo-strip.h"
+#include "ParticleStrip/led-strip.h"
+#include "ParticleStrip/patterns.h"
 
 //
 // See examples directory for examples with all strip types,

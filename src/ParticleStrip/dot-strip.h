@@ -45,10 +45,42 @@
 
 class DotStrip : public ColorStrip   {
   public:
-    DotStrip(int pixelCount);
+    inline DotStrip(int pixelCount) :
+        ColorStrip(pixelCount) {
 
-    virtual void drawPixel(Color color);
-    virtual void finishDraw();
+      SPI.begin();
+      SPI.setBitOrder(MSBFIRST);
+      SPI.setDataMode(SPI_MODE0);
+
+      drawSolid(BLACK);
+    }
+
+    virtual inline void drawPixel(Color color) {
+      if (this->drawOffset == 0) {
+        // Signal the start of draw.
+        SPI.transfer(0x00);
+        SPI.transfer(0x00);
+        SPI.transfer(0x00);
+        SPI.transfer(0x00);
+      }
+
+      ColorStrip::drawPixel(color);
+
+      SPI.transfer(0xFF);
+      SPI.transfer(color.green);
+      SPI.transfer(color.blue);
+      SPI.transfer(color.red);
+    }
+
+    virtual inline void finishDraw() {
+      ColorStrip::finishDraw();
+
+      // Signal the end of draw.
+      SPI.transfer(0x00);
+      SPI.transfer(0x00);
+      SPI.transfer(0x00);
+      SPI.transfer(0x00);
+    }
 };
 
 #endif

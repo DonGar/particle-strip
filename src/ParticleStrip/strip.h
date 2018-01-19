@@ -34,12 +34,35 @@
 
 class ColorStrip {
   public:
-    ColorStrip(int pixelCount, bool buffer=true);
+    inline ColorStrip(int pixelCount, bool buffer=true) :
+        pixelCount(pixelCount),
+        drawOffset(0),
+        pixelBuffer(NULL) {
+      if (buffer) {
+        this->pixelBuffer = (Color*)malloc(sizeof(Color) * pixelCount);
+      }
+    }
 
-    virtual void drawPixel(Color color);
-    virtual void finishDraw();
+    virtual inline void drawPixel(Color color) {
+      if (this->drawOffset >= this->pixelCount) {
+        return;
+      }
 
-    virtual void drawSolid(Color color);
+      this->pixelBuffer[this->drawOffset] = color;
+      this->drawOffset++;
+    }
+
+    virtual inline void finishDraw() {
+      this->drawOffset = 0;
+    }
+
+    virtual inline void drawSolid(Color color) {
+      for (int i = 0; i < this->pixelCount; i++) {
+        this->drawPixel(color);
+      }
+
+      this->finishDraw();
+    }
 
     int getPixelCount() { return this->pixelCount; }
     Color* getPixelBuffer() { return this->pixelBuffer; }

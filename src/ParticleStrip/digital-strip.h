@@ -36,10 +36,39 @@
 //   GND to Ground.
 class DigitalStrip : public ColorStrip   {
   public:
-    DigitalStrip(int pixelCount);
+    inline DigitalStrip(int pixelCount) :
+        ColorStrip(pixelCount) {
 
-    virtual void drawPixel(Color color);
-    virtual void finishDraw();
+      SPI.begin();
+      SPI.setBitOrder(MSBFIRST);
+      SPI.setDataMode(SPI_MODE0);
+
+      this->finishDraw();
+      drawSolid(BLACK);
+    }
+
+    virtual inline void drawPixel(Color color) {
+      ColorStrip::drawPixel(color);
+
+    // GRB color order, oddly, and only 0x7F is sinificant, so
+    // through away least significant bit.
+      SPI.transfer(color.green >> 1 | 0x80);
+      SPI.transfer(color.red >> 1   | 0x80);
+      SPI.transfer(color.blue >> 1  | 0x80);
+    }
+
+    virtual inline void finishDraw() {
+      ColorStrip::finishDraw();
+
+    // Transfer enough zeros to latch all pixel controllers and prepare
+    // for new draws.
+      int latch_size = ((this->pixelCount+31) / 32) * 8;
+
+      for (int i = 0; i < latch_size; i++) {
+        SPI.transfer(0);
+      }
+    }
+
 };
 
 #endif

@@ -58,10 +58,27 @@
 //
 class NeoStrip : public ColorStrip   {
   public:
-    NeoStrip(int pixelCount, int pin, uint8_t neoType=WS2812B);
+    inline NeoStrip(int pixelCount, int pin, uint8_t neoType=WS2812B) :
+        ColorStrip(pixelCount, false),
+        neoLibrary(pixelCount, pin, neoType) {
+      this->neoLibrary.begin();
+      drawSolid(BLACK);
+    }
 
-    virtual void drawPixel(Color color);
-    virtual void finishDraw();
+    virtual inline void drawPixel(Color color) {
+      if (this->drawOffset >= this->pixelCount) {
+        return;
+      }
+
+      this->neoLibrary.setColor(this->drawOffset, color.red, color.green, color.blue);
+      this->drawOffset++;
+    }
+
+    virtual inline void finishDraw() {
+      ColorStrip::finishDraw();
+
+      this->neoLibrary.show();
+    }
 
   private:
     Adafruit_NeoPixel neoLibrary;

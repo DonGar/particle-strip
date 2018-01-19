@@ -39,13 +39,34 @@
 // This strip always has a length of 1, since it only supports a single LED.
 // It exists to make it easy to use color mixing/dimming code, as well as
 // the simpler animations (pulsing, random colors, etc).
-
 class LedStrip : public ColorStrip   {
   public:
-    LedStrip(int red_pin, int green_pin, int blue_pin,
-             bool common_anode=true);
+    inline LedStrip(int red_pin, int green_pin, int blue_pin,
+                    bool common_anode=true) :
+          ColorStrip(1, false),
+          red_pin(red_pin), green_pin(green_pin), blue_pin(blue_pin),
+          common_anode(common_anode) {
 
-    virtual void drawPixel(Color color);
+      pinMode(this->red_pin, OUTPUT);
+      pinMode(this->green_pin, OUTPUT);
+      pinMode(this->blue_pin, OUTPUT);
+
+      drawSolid(BLACK);
+    }
+
+    virtual inline void drawPixel(Color color) {
+      if (this->drawOffset >= this->pixelCount) {
+        return;
+      }
+      this->drawOffset++;
+
+      if (this->common_anode)
+        color = invertColor(color);
+
+      analogWrite(this->red_pin, color.red);
+      analogWrite(this->green_pin, color.green);
+      analogWrite(this->blue_pin, color.blue);
+    }
 
   private:
     int red_pin, green_pin, blue_pin;
