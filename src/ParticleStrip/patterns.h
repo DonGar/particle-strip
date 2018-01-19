@@ -20,8 +20,9 @@
 #ifndef PATTERN_H
 #define PATTERN_H
 
+#include <math.h>
+
 #include "strip.h"
-#include "math.h"
 
 #define BLOB_COUNT (3)
 
@@ -52,6 +53,30 @@ typedef enum {
 //       and morph them over time. Speed controls how long blobs last.
 // TEST: A test pattern to ensure a strip is working properly. Flashes
 //       Black, White, Red, Green, Blue, then repeates per-pixel.
+
+
+class PatternDescription {
+public:
+  inline PatternDescription() :
+    pattern(SOLID), a(BLACK), b(BLACK), speed(0) {}
+
+  PatternType pattern;
+  Color a;
+  Color b;
+  int speed;
+};
+
+inline bool operator ==(const PatternDescription &left, const PatternDescription &right) {
+  return ((left.pattern == right.pattern) &&
+          (left.a == right.a) &&
+          (left.b == right.b) &&
+          (left.speed == right.speed));
+}
+
+inline bool operator !=(const PatternDescription &left, const PatternDescription &right) {
+  return !(left == right);
+}
+
 
 
 // Standard usage is to initialize the pattern in 'setup()', and call
@@ -145,75 +170,6 @@ class Pattern {
 
       // The pattern wasn't updated.
       return false;
-    }
-
-    // Get/Set the pattern based on a string of the form:
-    //   <PATTERN>,<COLOR>,<COLOR>,<SPEED>
-    //   Eg: "CYLON,0x000000ff,0x00000000,1000"
-    inline String getText() {
-      const String PATTERN_MAP[PATTERN_COUNT] = {
-        "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA", "TEST"
-      };
-
-      // <PATTERN>,0xFFFFFF,0xFFFFFF,55
-      return (PATTERN_MAP[this->active.pattern] + ',' +
-              colorToString(this->active.a) + ',' +
-              colorToString(this->active.b) + ',' +
-              this->active.speed);
-    }
-
-    inline int setText(String value) {
-      const String PATTERN_MAP[PATTERN_COUNT] = {
-        "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA", "TEST"
-      };
-
-      // These are the four values we are trying to populate.
-      int newPattern = SOLID;
-      Color newColorA = BLACK;
-      Color newColorB = BLACK;
-      int newSpeed  = 0;
-
-      // These are the
-      int wordBegin = 0;
-      int wordEnd = value.indexOf(',');
-      if (wordEnd <= 0)
-        return -1;
-
-      String patternText = value.substring(wordBegin, wordEnd);
-
-      // Search for the pattern.
-      for (newPattern = 0; newPattern < PATTERN_COUNT; newPattern++) {
-        if (patternText == PATTERN_MAP[newPattern]) {
-          break;
-        }
-      }
-      if (newPattern == PATTERN_COUNT)
-        return -2;
-
-      wordBegin = wordEnd + 1;
-      wordEnd = value.indexOf(',', wordBegin);
-      if (wordEnd <= 0)
-        return -3;
-
-      newColorA = stringToColor(value.substring(wordBegin, wordEnd));
-
-      wordBegin = wordEnd + 1;
-      wordEnd = value.indexOf(',', wordBegin);
-      if (wordEnd <= 0)
-        return -4;
-
-      newColorB = stringToColor(value.substring(wordBegin, wordEnd));
-
-      wordBegin = wordEnd + 1;
-
-      String speedText = value.substring(wordBegin);
-      newSpeed = strtol(speedText.c_str(), NULL, 10);
-
-      if (newSpeed < 0)
-        return -5;
-
-      this->setPattern((PatternType)newPattern, newColorA, newColorB, newSpeed);
-      return 0;
     }
 
   protected:
@@ -493,13 +449,6 @@ class Pattern {
       this->position++;
       return true;
     }
-
-    typedef struct PatternDescription {
-        PatternType pattern;
-        Color a;
-        Color b;
-        int speed;
-    } PatternDescription;
 
     typedef struct Blob {
         int pos;

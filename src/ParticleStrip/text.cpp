@@ -17,23 +17,21 @@
       'https://github.com/DonGar/particle-strip
   -------------------------------------------------------------------------*/
 
-#ifndef PARTICLE_STRIP_H
-#define PARTICLE_STRIP_H
+#include "text.h"
 
-// Include all the headers provided by this library.
-#include "ParticleStrip/color.h"
-#include "ParticleStrip/strip.h"
-#include "ParticleStrip/digital-strip.h"
-#include "ParticleStrip/dot-strip.h"
-#include "ParticleStrip/neo-strip.h"
-#include "ParticleStrip/led-strip.h"
-#include "ParticleStrip/patterns.h"
-#include "ParticleStrip/text.h"
+const nameToColor colorNameMap[COLOR_NAME_MAP_SIZE] = {
+  "BLACK", BLACK,
+  "WHITE", WHITE,
+  "RED", RED,
+  "GREEN", GREEN,
+  "BLUE", BLUE,
+  "YELLOW", YELLOW,
+  "LIGHT_BLUE", LIGHT_BLUE,
+  "PURPLE", PURPLE,
+  "RANDOM", RANDOM,
+  "RANDOM_PRIMARY", RANDOM_PRIMARY,
+};
 
-//
-// See examples directory for examples with all strip types,
-// for working with various animation patterns, working with colors,
-// and for working with particle cloud RPCs.
-//
-
-#endif
+const String PATTERN_MAP[PATTERN_COUNT] = {
+  "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA", "TEST"
+};
