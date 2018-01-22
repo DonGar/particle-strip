@@ -29,13 +29,23 @@
 // Convert Colors to/from Strings.
 //
 
-typedef struct {
-  String name;
-  Color color;
-} nameToColor;
+static const struct { String name; Color color; } COLOR_NAME_MAP[] = {
+  "BLACK", BLACK,
+  "WHITE", WHITE,
+  "RED", RED,
+  "GREEN", GREEN,
+  "BLUE", BLUE,
+  "YELLOW", YELLOW,
+  "LIGHT_BLUE", LIGHT_BLUE,
+  "PURPLE", PURPLE,
+  "RANDOM", RANDOM,
+  "RANDOM_PRIMARY", RANDOM_PRIMARY,
+};
+#define COLOR_NAME_MAP_SIZE (sizeof(COLOR_NAME_MAP) / sizeof(COLOR_NAME_MAP[0]))
 
-const int COLOR_NAME_MAP_SIZE = 10;
-extern const nameToColor colorNameMap[COLOR_NAME_MAP_SIZE];
+static const String PATTERN_NAMES[] = {
+  "SOLID", "PULSE", "CYLON", "ALTERNATE", "FLICKER", "LAVA", "TEST"
+};
 
 //
 // This contains helpers for converting colors and patterns into simple
@@ -54,8 +64,8 @@ inline String _colorToStringHelper(uint8_t b) {
 inline String colorToString(Color color) {
   // Try to look up well known color names.
   for (int i = 0; i < COLOR_NAME_MAP_SIZE; i++) {
-    if (color == colorNameMap[i].color) {
-      return colorNameMap[i].name;
+    if (color == COLOR_NAME_MAP[i].color) {
+      return COLOR_NAME_MAP[i].name;
     }
   }
 
@@ -77,8 +87,8 @@ inline Color stringToColor(String color) {
 
   // Try to look up well known color names.
   for (int i = 0; i < COLOR_NAME_MAP_SIZE; i++) {
-    if (color == colorNameMap[i].name) {
-      return colorNameMap[i].color;
+    if (color == COLOR_NAME_MAP[i].name) {
+      return COLOR_NAME_MAP[i].color;
     }
   }
 
@@ -107,17 +117,15 @@ inline Color stringToColor(String color) {
 // Convert Patterns to/from Strings.
 //
 
-extern const String PATTERN_MAP[PATTERN_COUNT];
-
 inline String patternTypeToString(PatternType pattern) {
-  return PATTERN_MAP[pattern]  ;
+  return PATTERN_NAMES[pattern]  ;
 }
 
 inline PatternType stringToPatternType(String patternText) {
   // Search for the pattern.
   int patternOffset;
   for (patternOffset = 0; patternOffset < PATTERN_COUNT; patternOffset++) {
-    if (patternText == PATTERN_MAP[patternOffset]) {
+    if (patternText == PATTERN_NAMES[patternOffset]) {
       break;
     }
   }

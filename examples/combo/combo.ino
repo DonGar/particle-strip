@@ -23,21 +23,19 @@ NeoStrip ringRgb(16, D2, WS2812B);
 Pattern ringPattern(&ringRgb, "ring");
 
 int setStripPattern(String text) {
-  int result = stripPattern.setText(text);
-  Spark.publish("strip", stripPattern.getText(), 60, PRIVATE);
-  return result;
+  stripPattern.setPattern(stringToPattern(text));
+  return 0;
 }
 
 int setRingPattern(String text) {
-  int result = ringPattern.setText(text);
-  Spark.publish("ring", ringPattern.getText(), 60, PRIVATE);
-  return result;
+  ringPattern.setPattern(stringToPattern(text));
+  return 0;
 }
 
 void setup()
 {
-  stripPattern.setPattern(CYLON, RED, BLACK, 1000);
-  ringPattern.setPattern(CYLON, RED, GREEN, 1000);
+  stripPattern.setPattern(TEST, RED, BLACK, 1000);
+  ringPattern.setPattern(TEST, RED, GREEN, 1000);
 
   Spark.function("strip_target", setStripPattern);
   Spark.function("ring_target", setRingPattern);
@@ -45,6 +43,13 @@ void setup()
 
 void loop()
 {
-  stripPattern.drawUpdate();
-  ringPattern.drawUpdate();
+  if (stripPattern.drawUpdate()) {
+    String patternText = patternToString(stripPattern.getPattern());
+    Spark.publish("strip", patternText, 60, PRIVATE);
+  }
+
+  if (ringPattern.drawUpdate()) {
+    String patternText = patternToString(ringPattern.getPattern());
+    Spark.publish("ring", patternText, 60, PRIVATE);
+  }
 }

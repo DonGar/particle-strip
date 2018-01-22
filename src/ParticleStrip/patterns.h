@@ -58,7 +58,13 @@ typedef enum {
 class PatternDescription {
 public:
   inline PatternDescription() :
-    pattern(SOLID), a(BLACK), b(BLACK), speed(0) {}
+    PatternDescription(SOLID, BLACK, BLACK, 0) {}
+
+  inline PatternDescription(PatternType pattern,
+                            Color a,
+                            Color b,
+                            int speed) :
+      pattern(pattern), a(a), b(b), speed(speed) {}
 
   PatternType pattern;
   Color a;
@@ -114,11 +120,16 @@ class Pattern {
       this->reset_workingstate();
     }
 
+    inline PatternDescription getPattern() {
+      return this->active;
+    }
+
     inline void setPattern(PatternType pattern, Color a, Color b, int speed) {
-      this->next.pattern = pattern;
-      this->next.a = a;
-      this->next.b = b;
-      this->next.speed = speed;
+      this->setPattern(PatternDescription(pattern, a, b, speed));
+    }
+
+    inline void setPattern(const PatternDescription &next) {
+      this->next = next;
     }
 
     // Returns true, if the Pattern was updated.

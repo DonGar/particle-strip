@@ -67,4 +67,6 @@ void loop() {
 
   // Redraw strip, with current animation state (if needed).
   pattern.drawUpdate();
+
+  String patternText = patternToString(pattern.getPattern());
 }
